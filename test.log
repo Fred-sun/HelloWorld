@@ -1,0 +1,15 @@
+TASK [create a vm] *************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Failed to authenticate with provided credentials. Some attributes were missing. Credentials must include client_id, secret and tenant or ad_user and password, or ad_user, password, client_id, tenant and adfs_authority_url(optional) for ADFS authentication, or be logged in using AzureCLI."}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+
+
+
+Pass
+TASK [create a vm] *************************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
