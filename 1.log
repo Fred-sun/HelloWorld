@@ -1,13 +1,7 @@
   ggggggggggggggg
 ffffffffffffffff 
-   fred test
-   fred test
-   fred test
-=======
-  ccccccccccc
-dddddddddddd
-eeeeeeeeeeeeee 
->>>>>>> origin/brach04
+   Just for test
+   Git programe
    
    1  sudo apt-get install pip
     2  sudo apt-get install ansible
