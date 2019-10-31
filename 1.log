@@ -1,4 +1,9 @@
-    1  sudo apt-get install pip
+fred add test
+bbbbbbbbb
+   
+   
+   
+   1  sudo apt-get install pip
     2  sudo apt-get install ansible
     3  ping www.163.com
     4  easy_install
