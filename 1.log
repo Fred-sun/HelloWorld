@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-=======
-   
-=======
-  ccccccccccc
-dddddddddddd
+  ggggggggggggggg
+ffffffffffffffff 
+   12222222222222222222222222
+   4444444444444444444444444444444
 eeeeeeeeeeeeee 
->>>>>>> origin/brach04
    
    1  sudo apt-get install pip
     2  sudo apt-get install ansible
