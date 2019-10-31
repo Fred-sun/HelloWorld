@@ -1,9 +1,6 @@
-=======
-fred add test
-bbbbbbbbb
-   
->>>>>>> branch02
-   
+  ccccccccccc
+dddddddddddd
+eeeeeeeeeeeeee 
    
    1  sudo apt-get install pip
     2  sudo apt-get install ansible
