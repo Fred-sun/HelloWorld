@@ -7,7 +7,7 @@ steps:
   inputs:
     toolMajorVersion: 'V2'
     outputFormat: 'csv'
-    searchersFileType: 'Custom'
+    searchersFileType: 'Default'
 - task: SdtReport@1
   inputs:
     TsvFile: false
