@@ -4,6 +4,10 @@ pool:
   vmImage: 'windows-latest'
 steps:
 - task: CredScan@2
+  inputs:
+    toolMajorVersion: 'V2'
+    outputFormat: 'csv'
+    searchersFileType: 'Custom'
 - task: SdtReport@1
   inputs:
     TsvFile: false
