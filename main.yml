@@ -1,0 +1,77 @@
+- name: Set Container Instance Names
+  set_fact:
+    rpfx: fredrpfx04
+  tags: fred
+
+- name: Create virtual network
+  azure_rm_virtualnetwork:
+    resource_group: "{{ resource_group }}"
+    name: "vnet{{ rpfx }}"
+    address_prefixes_cidr:
+      - 10.1.0.0/16
+      - 172.100.0.0/16
+
+- name: Create a subnet
+  azure_rm_subnet:
+    resource_group: "{{ resource_group }}"
+    name: "sub{{ rpfx }}"
+    virtual_network_name: "vnet{{ rpfx }}"
+    address_prefix_cidr: "10.1.0.0/24"
+    private_link_service_network_policies: Disabled
+    private_endpoint_network_policies: Disabled
+    delegations:
+      - name: delegation_to_containerinsance
+        serviceName: 'Microsoft.ContainerInstance/containerGroups'
+  register: subnet_output
+
+- name: Create sample container instance
+  azure_rm_containerinstance:
+    resource_group: "{{ resource_group }}"
+    name: "aci{{ rpfx }}"
+    os_type: linux
+    ip_address: private
+    #ip_address: public
+    location: eastus
+    subnet_ids:
+      - "{{ subnet_output.state.id }}"
+    ports:
+      - 80
+    containers:
+      - name: mycontainer1
+        image: httpd
+        memory: 1.5
+        ports:
+          - 80
+          - 81
+  register: output
+
+- name: Create sample container instance -- same parameters
+  azure_rm_containerinstance:
+    resource_group: "{{ resource_group }}"
+    name: "aci{{ rpfx }}"
+    os_type: linux
+    subnet_ids:
+      - "{{ subnet_output.state.id }}"
+    ip_address: private
+    location: eastus
+    ports:
+      - 80
+    containers:
+      - name: mycontainer1
+        image: httpd
+        memory: 1.5
+        ports:
+          - 80
+          - 81
+  register: output
+
+- name: Gather facts for single Container Instance
+  azure_rm_containerinstance_info:
+    resource_group: "{{ resource_group }}"
+    name: "aci{{ rpfx }}"
+  register: output
+  tags: fred
+
+- debug:
+    var: output
+  tags: fred
