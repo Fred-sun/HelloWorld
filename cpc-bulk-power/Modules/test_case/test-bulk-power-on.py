@@ -9,7 +9,7 @@ from page_operator.bulk_power_operator import BulkPowerOperator
 
 logger = LogUtils()
 helperHandle = PlayWrightHelper()
-device_list = ["CPC-fredb-ZIIUE"]
+device = "CPC-fredb-ZIIUE"
 
 
 class TestBulkPowerOn:
@@ -29,19 +29,15 @@ class TestBulkPowerOn:
 
     def step_02(self):
         logger.print(LogLevel.INFO, "step_02: Confirm the Front cloud PC is Power off")
-        self.BulkPowerOperator.confirm_device_power_state(
-            device_list, expected_state="Off"
-        )
+        self.BulkPowerOperator.confirm_device_power_state(device, expected_state="Off")
 
     def step_03(self):
         logger.print(LogLevel.INFO, "step_03: Bulk device actions - Power on")
-        self.BulkPowerOperator.bulk_device_power_on(device_list, expected_state="On")
+        self.BulkPowerOperator.bulk_device_power_on(device, expected_state="On")
 
     def step_04(self):
         logger.print(LogLevel.INFO, "step_04: Verify the Front cloud PC is Power on")
-        self.BulkPowerOperator.verify_devices_power_state(
-            device_list, expected_state="On"
-        )
+        self.BulkPowerOperator.verify_devices_power_state(device, expected_state="On")
 
     def test_bulk_power_on(self):
         logger.print(LogLevel.INFO, "Start bulk power on test")

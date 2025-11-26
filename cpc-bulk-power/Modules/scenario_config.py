@@ -1,4 +1,4 @@
 # Scenario Name
 scenarioName = "cpc-bulk-power"
 
-is_local = True
+is_local = False

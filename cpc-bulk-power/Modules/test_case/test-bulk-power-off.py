@@ -9,10 +9,10 @@ from page_operator.bulk_power_operator import BulkPowerOperator
 
 logger = LogUtils()
 helperHandle = PlayWrightHelper()
-device_list = ["CPC-fredb-ZIIUE"]
+device = "CPC-fredb-ZIIUE"
 
 
-class TestBulkPowerOn:
+class TestBulkPowerOff:
     """Bulk Power Off Case"""
 
     def init_page_opr(self, env, certname):
@@ -26,27 +26,24 @@ class TestBulkPowerOn:
         logger.print(LogLevel.INFO, msg)
         self.commonPageOperator.login(self.browser, Portal.MEM, user_name)
         self.commonPageOperator.goto_blade(self.browser, "Devices", "All devices")
-        # self.commonPageOperator.goto_blade(self.browser, "Devices", "Windows 365")
 
     def step_02(self):
         logger.print(LogLevel.INFO, "step_02: Confirm the Front cloud PC is Power On")
         self.BulkPowerOperator.confirm_device_power_off_state(
-            device_list, expected_state="On"
+            device, expected_state="On"
         )
 
     def step_03(self):
         logger.print(LogLevel.INFO, "step_03: Bulk device actions - Power Off")
-        self.BulkPowerOperator.bulk_device_power_on(device_list, expected_state="Off")
+        self.BulkPowerOperator.bulk_device_power_on(device, expected_state="Off")
 
     def step_04(self):
         logger.print(LogLevel.INFO, "step_04: Verify the Front cloud PC is Power Off")
-        self.BulkPowerOperator.verify_devices_power_state(
-            device_list, expected_state="Off"
-        )
+        self.BulkPowerOperator.verify_devices_power_state(device, expected_state="Off")
 
     def step_05(self):
         logger.print(LogLevel.INFO, "step_05: Power on the Front cloud PC")
-        self.BulkPowerOperator.power_on_devices(device_list)
+        self.BulkPowerOperator.power_on_devices(device)
 
     def test_bulk_power_on(self):
         logger.print(LogLevel.INFO, "Start bulk power on test")

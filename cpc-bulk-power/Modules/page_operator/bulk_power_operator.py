@@ -12,52 +12,50 @@ class BulkPowerOperator:
     def get_page(self):
         return self.browser.pages[0]
 
-    def confirm_device_power_off_state(self, device_list, expected_state="Off"):
+    def confirm_device_power_off_state(self, device, expected_state="Off"):
         page = self.get_page()
         helperHandle.click(page, bulk_power_config["Windows 365"])
         helperHandle.click(page, MenuConf["All Cloud PCs"])
 
-        for device in device_list:
-            # Locate the device row and check its power state
-            helperHandle.input_text(
-                page, bulk_power_config["CPC Search inputbox"], device
-            )
-            page.wait_for_timeout(5000)  # Wait for search results to load
-            helperHandle.click(page, bulk_power_config["CPC First device name"])
-            page.wait_for_timeout(10000)
-            power_state = helperHandle.get_element_attribute_value(
-                page, bulk_power_config["Power Off"], "aria-disabled"
-            )
-            if power_state == "false" and expected_state == "Off":
-                helperHandle.click(page, bulk_power_config["Power Off"])
-                helperHandle.click(page, bulk_power_config["Confirm Power"])
-            elif power_state == "true" and expected_state == "On":
-                helperHandle.click(page, bulk_power_config["Power On"])
-                helperHandle.click(page, bulk_power_config["Confirm Power"])
-        page.wait_for_timeout(300000)
-        page.reload()
+        helperHandle.input_text(page, bulk_power_config["CPC Search inputbox"], device)
+        page.wait_for_timeout(5000)  # Wait for search results to load
+        helperHandle.click(page, bulk_power_config["CPC First device name"])
+        page.wait_for_timeout(10000)
+        power_state = helperHandle.get_element_attribute_value(
+            page, bulk_power_config["Power Off"], "aria-disabled"
+        )
+        if power_state == "false" and expected_state == "Off":
+            helperHandle.click(page, bulk_power_config["Power Off"])
+            helperHandle.click(page, bulk_power_config["Confirm Power"])
+            page.wait_for_timeout(300000)
+            page.reload()
+        elif power_state == "true" and expected_state == "On":
+            helperHandle.click(page, bulk_power_config["Power On"])
+            helperHandle.click(page, bulk_power_config["Confirm Power"])
+            page.wait_for_timeout(300000)
+            page.reload()
 
-    def confirm_device_power_state(self, device_list, expected_state="Off"):
+    def confirm_device_power_state(self, device, expected_state="Off"):
         page = self.get_page()
-        for device in device_list:
-            # Locate the device row and check its power state
-            helperHandle.input_text(page, bulk_power_config["Search Box"], device)
-            page.wait_for_timeout(10000)  # Wait for search results to load
-            helperHandle.click(page, bulk_power_config["First Box"])
-            page.wait_for_timeout(15000)
-            power_state = helperHandle.get_element_attribute_value(
-                page, bulk_power_config["Power Off"], "aria-disabled"
-            )
-            if power_state == "false" and expected_state == "Off":
-                helperHandle.click(page, bulk_power_config["Power Off"])
-                helperHandle.click(page, bulk_power_config["Confirm Power"])
-            elif power_state == "true" and expected_state == "On":
-                helperHandle.click(page, bulk_power_config["Power On"])
-                helperHandle.click(page, bulk_power_config["Confirm Power"])
-        page.wait_for_timeout(300000)
-        page.reload()
+        helperHandle.input_text(page, bulk_power_config["Search Box"], device)
+        page.wait_for_timeout(10000)  # Wait for search results to load
+        helperHandle.click(page, bulk_power_config["First Box"])
+        page.wait_for_timeout(15000)
+        power_state = helperHandle.get_element_attribute_value(
+            page, bulk_power_config["Power Off"], "aria-disabled"
+        )
+        if power_state == "false" and expected_state == "Off":
+            helperHandle.click(page, bulk_power_config["Power Off"])
+            helperHandle.click(page, bulk_power_config["Confirm Power"])
+            page.wait_for_timeout(300000)
+            page.reload()
+        elif power_state == "true" and expected_state == "On":
+            helperHandle.click(page, bulk_power_config["Power On"])
+            helperHandle.click(page, bulk_power_config["Confirm Power"])
+            page.wait_for_timeout(300000)
+            page.reload()
 
-    def bulk_device_power_on(self, device_list, expected_state):
+    def bulk_device_power_on(self, device, expected_state):
         page = self.get_page()
         helperHandle.click(page, MenuConf["Devices"])
         helperHandle.click(page, MenuConf["All devices"])
@@ -80,12 +78,11 @@ class BulkPowerOperator:
         helperHandle.click(page, bulk_power_config["Select one Option"])
         helperHandle.click(page, bulk_power_config["Add devices"])
         page.wait_for_timeout(5000)
-        for item in device_list:
-            helperHandle.input_text(page, bulk_power_config["Select devices"], item)
-            page.wait_for_timeout(5000)
-            helperHandle.click(page, bulk_power_config["Select one device layer1"])
-            page.wait_for_timeout(5000)
-            helperHandle.click(page, bulk_power_config["Select one device layer2"])
+        helperHandle.input_text(page, bulk_power_config["Select devices"], device)
+        page.wait_for_timeout(5000)
+        helperHandle.click(page, bulk_power_config["Select one device layer1"])
+        page.wait_for_timeout(5000)
+        helperHandle.click(page, bulk_power_config["Select one device layer2"])
         page.wait_for_timeout(5000)
         helperHandle.click(page, bulk_power_config["Select"])
         page.wait_for_timeout(5000)
@@ -95,39 +92,39 @@ class BulkPowerOperator:
         page.wait_for_timeout(300000)
         page.reload()
 
-    def verify_devices_power_state(self, device_list, expected_state="On"):
+    def verify_devices_power_state(self, device, expected_state="On"):
         page = self.get_page()
         helperHandle.click(page, MenuConf["Devices"])
         helperHandle.click(page, MenuConf["All devices"])
         page.wait_for_timeout(5000)
-        for device in device_list:
-            helperHandle.input_text(page, bulk_power_config["Search Box"], device)
-            page.wait_for_timeout(5000)
-            helperHandle.click(page, bulk_power_config["First Box"])
-            page.wait_for_timeout(15000)
-            power_state = helperHandle.get_element_attribute_value(
-                page, bulk_power_config["Power Off"], "aria-disabled"
-            )
-            if power_state == "false" and expected_state == "Off":
-                raise Exception(f"Device {device} is expected to be Off but is On.")
-            elif power_state == "true" and expected_state == "On":
-                raise Exception(f"Device {device} is expected to be On but is Off.")
 
-    def power_on_devices(self, device_list):
+        helperHandle.input_text(page, bulk_power_config["Search Box"], device)
+        page.wait_for_timeout(5000)
+        helperHandle.click(page, bulk_power_config["First Box"])
+        page.wait_for_timeout(15000)
+        power_state = helperHandle.get_element_attribute_value(
+            page, bulk_power_config["Power Off"], "aria-disabled"
+        )
+        if power_state == "false" and expected_state == "Off":
+            raise Exception(f"Device {device} is expected to be Off but is On.")
+        elif power_state == "true" and expected_state == "On":
+            raise Exception(f"Device {device} is expected to be On but is Off.")
+
+    def power_on_devices(self, device):
         page = self.get_page()
         helperHandle.click(page, MenuConf["Devices"])
         helperHandle.click(page, MenuConf["All devices"])
         page.wait_for_timeout(5000)
-        for device in device_list:
-            helperHandle.input_text(page, bulk_power_config["Search Box"], device)
-            page.wait_for_timeout(5000)
-            helperHandle.click(page, bulk_power_config["First Box"])
-            page.wait_for_timeout(15000)
-            power_state = helperHandle.get_element_attribute_value(
-                page, bulk_power_config["Power Off"], "aria-disabled"
-            )
-            if power_state == "true":
-                helperHandle.click(page, bulk_power_config["Power On"])
-                helperHandle.click(page, bulk_power_config["Confirm Power"])
-        page.wait_for_timeout(300000)
-        page.reload()
+
+        helperHandle.input_text(page, bulk_power_config["Search Box"], device)
+        page.wait_for_timeout(5000)
+        helperHandle.click(page, bulk_power_config["First Box"])
+        page.wait_for_timeout(15000)
+        power_state = helperHandle.get_element_attribute_value(
+            page, bulk_power_config["Power Off"], "aria-disabled"
+        )
+        if power_state == "true":
+            helperHandle.click(page, bulk_power_config["Power On"])
+            helperHandle.click(page, bulk_power_config["Confirm Power"])
+            page.wait_for_timeout(300000)
+            page.reload()
