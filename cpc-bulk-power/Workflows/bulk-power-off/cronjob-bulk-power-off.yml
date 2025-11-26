@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: cronjob-bulk-power-off
+spec:
+  ttlStrategy:
+    secondsAfterCompletion: 2147483646
+  arguments:
+    parameters:
+      - name: workflow-id
+  entrypoint: cronjob-bulk-power-off
+  templates:
+    - name: cronjob-bulk-power-off
+      inputs:
+        parameters:
+          - name: workflow-id
+      steps:
+        - - name: cronjob-bulk-power-off-ppe
+            templateRef:
+              name: cronjob
+              template: schedule-cronjob
+              clusterScope: true
+            arguments:
+              parameters:
+                - name: time-schedule
+                  value: "30 3 * * SUN-FRI" # at 16:10 on Sunday~Friday
+                - name: workflow-name
+                  value: "bulk-power-off-ppe"
+                - name: workflow-args
+                  value: "submit -f bulk-power-off -t normal -n win365-ux-core -p browser='chrome' -p username='naut-uxcore-testuser000@cpcctip001.onmicrosoft.com'"
+                - name: workflow-id
+                  value: "{{inputs.parameters.workflow-id}}"     
+
+        - - name: cronjob-bulk-power-off-sh
+            templateRef:
+              name: cronjob
+              template: schedule-cronjob
+              clusterScope: true
+            arguments:
+              parameters:
+                - name: time-schedule
+                  value: "30 4 * * SUN-FRI" # at 14:10 on Sunday~Friday
+                - name: workflow-name
+                  value: "bulk-power-off-sh"
+                - name: workflow-args
+                  value: "submit -f bulk-power-off -t normal -n win365-ux-core -p browser='chrome' -p username='naut-uxcore-testuser000@cpcsh0001.onmicrosoft.com'"
+                - name: workflow-id
+                  value: "{{inputs.parameters.workflow-id}}"                                                        

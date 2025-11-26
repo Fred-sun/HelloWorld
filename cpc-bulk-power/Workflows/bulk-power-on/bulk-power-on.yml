@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: bulk-power-on
+spec:
+  arguments:
+    parameters:
+    - name: workflow-id
+    - name: browser
+    - name: username
+  entrypoint: bulk-power-on
+  onExit: data-recover
+  templates:
+  - name: bulk-power-on
+    inputs:
+      parameters:
+      - name: workflow-id
+      - name: browser
+      - name: username
+    steps:
+    - - name: bulk-power-on
+        templateRef: 
+            name: python-with-xvfb
+            template: python-with-xvfb
+            clusterScope: true
+        arguments:
+          parameters:
+            - name: py-filename
+              value: "Modules/run.py"
+            - name: py-args
+              value: "-caseName bulk-power-on -browserType {{inputs.parameters.browser}} -username {{inputs.parameters.username}}"
+            - name: workflow-id
+              value: '{{inputs.parameters.workflow-id}}'
+            - name: image-name
+              value: "cpcinfraacr.azurecr.io/naut/win365-ux-core/cpc-bulk-power/automation-py" # cpcinfraacr cpcinfraacrexpr
+            - name: image-tag
+              value: "prod"
+
+  - name: data-recover
+    steps:
+    - - name: recover-data
+        templateRef: 
+            name: datafactory-cli
+            template: data-factory-cli
+            clusterScope: true
+        arguments:
+          parameters:
+            - name: workflow-id
+              value: '{{workflow.parameters.workflow-id}}'

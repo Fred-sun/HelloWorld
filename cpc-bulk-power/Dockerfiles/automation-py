@@ -1,0 +1,5 @@
+FROM cpcinfraacr.azurecr.io/naut/community/win365-ux-core:prod
+
+COPY ./community/Modules/ ./
+COPY ./workspace/win365-ux-core/cpc-bulk-power/Modules/ ./
+WORKDIR /
